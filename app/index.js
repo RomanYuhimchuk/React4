@@ -41,7 +41,7 @@ var Index = React.createClass({
         field = this.state.field;
         field.map((el,i)=>{
             cellRows.push(
-                <Cell key={'row' + i} cellRow = {field} indexRow = {i} />
+                <Cell key={'row' + i} cellRow = {field} indexRow = {i} field={field} />
             );
       });
       return(
