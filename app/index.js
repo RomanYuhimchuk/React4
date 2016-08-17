@@ -10,7 +10,8 @@ var Index = React.createClass({
     for (let i=0; i<rows; i++){
         let row = [];
         for (let j=0; j<cols; j++){
-            row[j] =  "dead";
+
+            row[j] =  Math.random() > 0.8 ? "live" : "dead";
           }
         arr[i] = row;
     }
@@ -19,11 +20,18 @@ var Index = React.createClass({
     });
   },
 
+  updateField: function(arr){
+    this.setState({
+        newField: arr
+    });
+  },
+
   getInitialState: function () {
     return {
         rows : 0,
         columns: 0,
-        field: []
+        field: [],
+        newField: []
     }
   },
 
@@ -36,12 +44,16 @@ var Index = React.createClass({
       this.generateField(this.props.startCols, this.props.startRows);
   },
 
+  componentDidUpdate: function(){
+      console.log(this.state.newField)
+    },
+
   render: function(){
     let cellRows = [],
         field = this.state.field;
         field.map((el,i)=>{
             cellRows.push(
-                <Cell key={'row' + i} cellRow = {field} indexRow = {i} field={field} />
+                <Cell key={'row' + i} cellRow = {field} indexRow = {i} update = {this.updateField}/>
             );
       });
       return(
