@@ -1,6 +1,7 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 var Cell = require('./components/cell.js');
+var RunButton = require('./components/runbutton.js');
 require('./styles.scss');
 
 var Index = React.createClass({
@@ -11,7 +12,7 @@ var Index = React.createClass({
         let row = [];
         for (let j=0; j<cols; j++){
 
-            row[j] =  Math.random() > 0.8 ? "live" : "dead";
+            row[j] =  Math.random() > 0.9 ? "live" : "dead";
           }
         arr[i] = row;
     }
@@ -22,7 +23,7 @@ var Index = React.createClass({
 
   updateField: function(arr){
     this.setState({
-        newField: arr
+        field: arr
     });
   },
 
@@ -59,6 +60,7 @@ var Index = React.createClass({
       return(
         <div>
             {cellRows}
+            <RunButton onClick = {this.updateField} field = {this.state.field} />
         </div>
     );
   }
