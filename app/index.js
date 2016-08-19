@@ -2,6 +2,7 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var Cell = require('./components/cell.js');
 var RunButton = require('./components/runbutton.js');
+var Counter = require('./components/counter.js');
 require('./styles.scss');
 
 var Index = React.createClass({
@@ -11,7 +12,6 @@ var Index = React.createClass({
     for (let i=0; i<rows; i++){
         let row = [];
         for (let j=0; j<cols; j++){
-
             row[j] =  Math.random() > 0.9 ? "live" : "dead";
           }
         arr[i] = row;
@@ -22,9 +22,21 @@ var Index = React.createClass({
   },
 
   updateField: function(arr){
-    this.setState({
+      this.setState({
         field: arr
     });
+  },
+  cellClick: function(num){
+      let coord = [],
+      newField = this.state.field;
+      coord = num.split(' ');
+      newField[coord[0]][coord[1]] = newField[coord[0]][coord[1]] === 'dead' ? 'live' : 'dead';
+      this.updateField(newField);
+  },
+  counterUpdate: function(count){
+      this.setState({
+          counter: count
+      });
   },
 
   getInitialState: function () {
@@ -32,7 +44,7 @@ var Index = React.createClass({
         rows : 0,
         columns: 0,
         field: [],
-        newField: []
+        counter: 0,
     }
   },
 
@@ -45,22 +57,24 @@ var Index = React.createClass({
       this.generateField(this.props.startCols, this.props.startRows);
   },
 
-  componentDidUpdate: function(){
-      console.log(this.state.newField)
-    },
-
   render: function(){
     let cellRows = [],
         field = this.state.field;
         field.map((el,i)=>{
             cellRows.push(
-                <Cell key={'row' + i} cellRow = {field} indexRow = {i} update = {this.updateField}/>
+                <Cell key={'row' + i} cellRow = {field} indexRow = {i} update = {this.updateField} onClickCell={this.cellClick} />
             );
       });
       return(
         <div>
+            <Counter count = {this.state.counter} />
             {cellRows}
-            <RunButton onClick = {this.updateField} field = {this.state.field} />
+            <RunButton
+                onClick = {this.updateField}
+                field = {this.state.field}
+                countUpdate = {this.counterUpdate}
+                count = {this.state.counter}
+            />
         </div>
     );
   }
